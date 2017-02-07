@@ -10,7 +10,7 @@
   },
   "homepage": "https://vaadin.com/elements",
   "devDependencies": {
-    "coveralls": "^2.11.3",
+    "coveralls": "2.11.3",
     "eslint-config-vaadin": "^0.1.0",
     "eslint-plugin-html": "^1.7.0",
     "gulp": "latest",
@@ -19,7 +19,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-stylelint": "^3.7.0",
     "stylelint-config-vaadin": "^0.1.0",
-    "wct-random-output": "^0.1.1",
+    "wct-random-output": "^0.2.0",
     "web-component-tester": "4.0.3",
     "web-component-tester-istanbul": "https://github.com/t2ym/web-component-tester-istanbul/tarball/0.10.1"
   },
