@@ -33,7 +33,7 @@
           this.domHost.$.headerFocusTrap.activeTarget = cell._cellContent.id;
           break;
         case 'vaadin-grid-table-body':
-          var index = Polymer.dom(cell.parentElement).querySelectorAll('td').indexOf(cell);
+          var index = Polymer.dom(cell.parentElement).querySelectorAll('vaadin-grid-table-cell').indexOf(cell);
           var lastHeaderRow = this.domHost.$.header.lastElementChild;
           var headerCell = lastHeaderRow.children[index];
 

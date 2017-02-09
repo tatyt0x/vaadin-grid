@@ -155,7 +155,7 @@
     },
 
     _isSwappableByPosition: function(targetColumn, clientX) {
-      var targetCell = Polymer.dom(this.$.header).querySelectorAll('th').filter(function(cell) {
+      var targetCell = Polymer.dom(this.$.header).querySelectorAll('vaadin-grid-table-header-cell').filter(function(cell) {
         return cell.column === targetColumn;
       })[0];
       var sourceCellRect = this.$.header.querySelector('[reorder-status=dragging]').getBoundingClientRect();
@@ -176,9 +176,9 @@
         }
 
         if (contentId !== null) {
-          var injectionPoint = Polymer.dom(this.$.table).querySelectorAll('content')
+          var injectionPoint = Polymer.dom(this.$.table).querySelectorAll('slot')
           .filter(function(content) {
-            return content.getAttribute('select') === '[data-cell-content-id="' + contentId + '"]';
+            return content.getAttribute('slot') === contentId;
           })[0];
           return Polymer.dom(injectionPoint).parentNode;
         }

@@ -8,7 +8,9 @@
         outline: none;
       }
 
-      :host([navigating]:not([interacting])) [focused] > tr[focused] > [focused] ::content > .cell-content {
+      :host([navigating]:not([interacting])) [focused] > vaadin-grid-table-header-row[focused] > [focused] ::content > .cell-content,
+      :host([navigating]:not([interacting])) [focused] > vaadin-grid-table-row[focused] > [focused] ::content > .cell-content,
+      :host([navigating]:not([interacting])) [focused] > vaadin-grid-table-footer-row[focused] > [focused] ::content > .cell-content {
         box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.3);
         @apply(--vaadin-grid-focused-cell);
       }

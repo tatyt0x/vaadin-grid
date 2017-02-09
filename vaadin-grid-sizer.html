@@ -19,16 +19,16 @@
       }
     </style>
 
-    <template is="dom-repeat" items="[[_columns]]" as="column">
-      <vaadin-grid-sizer-cell class="cell" column="[[column]]">&nbsp;</vaadin-grid-sizer-cell>
-    </template>
+    <dom-repeat>
+      <template is="dom-repeat" items="[[_columns]]" as="column">
+        <vaadin-grid-sizer-cell class="cell" column="[[column]]">&nbsp;</vaadin-grid-sizer-cell>
+      </template>
+    </dom-repeat>
 
   </template>
   <script>
     Polymer({
       is: 'vaadin-grid-sizer',
-
-      extends: 'div',
 
       properties: {
         columnTree: Array,

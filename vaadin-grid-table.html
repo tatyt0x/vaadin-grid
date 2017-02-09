@@ -52,7 +52,7 @@
         width: 100%;
       }
 
-      #items > tr {
+      #items > vaadin-grid-table-row {
         box-sizing: border-box;
         margin: 0;
         position: absolute;
@@ -61,7 +61,7 @@
         will-change: transform;
       }
 
-      table {
+      #table {
         height: 100%;
         width: 100%;
         display: block;
@@ -73,12 +73,12 @@
         overflow: hidden;
       }
 
-      tbody {
+      vaadin-grid-table-body {
         display: block;
       }
 
-      thead th,
-      tfoot td {
+      vaadin-grid-table-header vaadin-grid-table-header-cell,
+      vaadin-grid-table-footer vaadin-grid-table-footer-cell {
         top: 0;
       }
 
@@ -137,7 +137,9 @@
         overflow: hidden;
       }
 
-      tr:not([hidden]) {
+      vaadin-grid-table-row:not([hidden]),
+      vaadin-grid-table-header-row:not([hidden]),
+      vaadin-grid-table-footer-row:not([hidden]) {
         display: flex;
         width: 100%;
       }
@@ -165,7 +167,7 @@
       }
 
       /* Style overrides required to make copying the selection to clipboard work properly (on Safari) */
-      :host([copying]) tr {
+      :host([copying]) vaadin-grid-table-row {
         opacity: 0 !important;
         position: static !important;
         display: table-row !important;
@@ -184,15 +186,15 @@
 
       /* Default borders */
 
-      thead tr:last-child th ::content > .cell-content {
+      vaadin-grid-table-header vaadin-grid-table-header-row:last-child vaadin-grid-table-header-cell ::content > .cell-content {
         border-bottom: 1px solid var(--divider-color, rgba(0, 0, 0, 0.08));
       }
 
-      tfoot tr:first-child td ::content > .cell-content {
+      vaadin-grid-table-footer vaadin-grid-table-header-row:first-child vaadin-grid-table-footer-cell ::content > .cell-content {
         border-top: 1px solid var(--divider-color, rgba(0, 0, 0, 0.08));
       }
 
-      tbody tr:not([lastrow]) td ::content > .cell-content {
+      vaadin-grid-table-body vaadin-grid-table-header-row:not([lastrow]) vaadin-grid-table-cell ::content > .cell-content {
         border-bottom: 1px solid var(--divider-color, rgba(0, 0, 0, 0.08));
       }
 
@@ -209,7 +211,7 @@
 
       /* Cells */
 
-      table tr .vaadin-grid-cell:not([detailscell]) ::content > .cell-content {
+      #table vaadin-grid-table-row .vaadin-grid-cell:not([detailscell]) ::content > .cell-content {
         background: #fff;
         text-align: left;
         padding: 8px;
@@ -217,33 +219,33 @@
         @apply(--vaadin-grid-cell);
       }
 
-      table thead .vaadin-grid-cell:not([detailscell]) ::content > .cell-content {
+      #table vaadin-grid-table-header .vaadin-grid-cell:not([detailscell]) ::content > .cell-content {
         font-weight: 500;
         @apply(--vaadin-grid-header-cell);
       }
 
-      table tfoot .vaadin-grid-cell:not([detailscell]) ::content > .cell-content {
+      #table vaadin-grid-table-footer .vaadin-grid-cell:not([detailscell]) ::content > .cell-content {
         font-weight: 500;
         @apply(--vaadin-grid-footer-cell);
       }
 
-      table tbody .vaadin-grid-cell:not([detailscell]) ::content > .cell-content {
+      #table vaadin-grid-table-body .vaadin-grid-cell:not([detailscell]) ::content > .cell-content {
         @apply(--vaadin-grid-body-cell);
       }
 
-      tbody [odd] .vaadin-grid-cell:not([detailscell]) ::content > .cell-content {
+      vaadin-grid-table-body [odd] .vaadin-grid-cell:not([detailscell]) ::content > .cell-content {
         @apply(--vaadin-grid-body-row-odd-cell);
       }
 
-      table tr .vaadin-grid-cell:not([detailscell])[last-frozen] ::content > .cell-content {
+      #table vaadin-grid-table-row .vaadin-grid-cell:not([detailscell])[last-frozen] ::content > .cell-content {
         @apply(--vaadin-grid-cell-last-frozen);
       }
 
-      :host(:not([scrolling])) tbody tr:hover .vaadin-grid-cell ::content > .cell-content {
+      :host(:not([scrolling])) vaadin-grid-table-body vaadin-grid-table-cell:hover .vaadin-grid-cell ::content > .cell-content {
         @apply(--vaadin-grid-body-row-hover-cell);
       }
 
-      table tr .vaadin-grid-cell.vaadin-grid-cell[lastcolumn] ::content > .cell-content {
+      #table vaadin-grid-table-row .vaadin-grid-cell.vaadin-grid-cell[lastcolumn] ::content > .cell-content {
         border-right: none;
       }
 
@@ -269,24 +271,26 @@
     <!-- TODO: Shadow DOM doesn't let focusin events bubble, therefore on-focus also -->
     <vaadin-grid-table-focus-trap id="headerFocusTrap" on-focus="_onHeaderFocus" on-focusin="_onHeaderFocus" on-focusout="_onFocusout">
     </vaadin-grid-table-focus-trap>
-    <content select="#headerFocusTrap"></content>
+    <slot name="headerFocusTrap"></slot>
 
     <vaadin-grid-table-focus-trap id="bodyFocusTrap" on-focus="_onBodyFocus" on-focusin="_onBodyFocus" on-focusout="_onFocusout">
     </vaadin-grid-table-focus-trap>
-    <content select="#bodyFocusTrap"></content>
+    <slot name="bodyFocusTrap"></slot>
 
-    <content select="vaadin-grid-column, vaadin-grid-selection-column, vaadin-grid-column-group"></content>
+    <!-- <slot name="columns"></slot> -->
+    <!-- <slot></slot> -->
+    <!-- <content select="vaadin-grid-column, vaadin-grid-selection-column, vaadin-grid-column-group"></content> -->
 
     <div id="spinner"></div>
-    <table id="table" overflow-hidden$="[[_hideTableOverflow(scrollbarWidth, safari)]]">
+    <div id="table" overflow-hidden$="[[_hideTableOverflow(scrollbarWidth, safari)]]">
       <caption>
-        <div id="fixedsizer" is="vaadin-grid-sizer" top="[[_estScrollHeight]]" column-tree="[[columnTree]]">
-        </div>
+        <vaadin-grid-sizer id="fixedsizer" top="[[_estScrollHeight]]" column-tree="[[columnTree]]">
+        </vaadin-grid-sizer>
       </caption>
-      <thead id="header" target="[[target]]" is="vaadin-grid-table-header" column-tree="[[columnTree]]"></thead>
-      <tbody id="items" is="vaadin-grid-table-body"></tbody>
-      <tfoot id="footer" target="[[target]]" is="vaadin-grid-table-footer" column-tree="[[columnTree]]"></tfoot>
-    </table>
+      <vaadin-grid-table-header id="header" target="[[target]]" column-tree="[[columnTree]]"></vaadin-grid-table-header>
+      <vaadin-grid-table-body id="items"></vaadin-grid-table-body>
+      <vaadin-grid-table-footer id="footer" target="[[target]]" column-tree="[[columnTree]]"></vaadin-grid-table-footer>
+    </div>
 
     <vaadin-grid-table-outer-scroller
         id="outerscroller"
@@ -294,14 +298,14 @@
         overflow-hidden$="[[_hideOuterScroller(scrollbarWidth, safari)]]"
         ios$="[[ios]]"
         scrolling$="[[scrolling]]">
-      <div id="outersizer" is="vaadin-grid-sizer" top="[[_estScrollHeight]]" column-tree="[[columnTree]]"></div>
+      <vaadin-grid-sizer id="outersizer" top="[[_estScrollHeight]]" column-tree="[[columnTree]]"></vaadin-grid-sizer>
     </vaadin-grid-table-outer-scroller>
 
     <!--
       in native Shadow, we move the footer focus trap to light DOM.
       It needs to be injected/slotted back inside the shadow root in order to be focusable.
      -->
-    <content select="#footerFocusTrap"></content>
+    <slot name="footerFocusTrap"></slot>
     <vaadin-grid-table-focus-trap id="footerFocusTrap" on-focus="_onFooterFocus" on-focusin="_onFooterFocus" on-focusout="_onFocusout">
     </vaadin-grid-table-focus-trap>
   </template>
@@ -423,12 +427,20 @@
     },
 
     _rowDetailsTemplateChanged: function(rowDetailsTemplate, physicalItems) {
+      if (!rowDetailsTemplate || !physicalItems) {
+        return;
+      }
+
       physicalItems.forEach(function(row) {
         row.rowDetailsTemplate = rowDetailsTemplate;
       });
     },
 
     _columnTreeChanged: function(columnTree, physicalItems, count) {
+      if (!columnTree || !physicalItems || !count) {
+        return;
+      }
+
       this._frozenCellsChanged();
       this._hasTemplatesChanged(columnTree);
 
@@ -441,7 +453,7 @@
     },
 
     _updateLastColumn: function() {
-      Polymer.dom(this.$.table).querySelectorAll('tr').forEach(function(row) {
+      Polymer.dom(this.$.table).querySelectorAll('vaadin-grid-table-row, vaadin-grid-table-header-row, vaadin-grid-table-footer-row').forEach(function(row) {
         row.updateLastColumn();
       });
     },
@@ -479,10 +491,14 @@
      * Creates a pool of DOM elements and attaches them to the local dom.
      */
     _createPool: function(size) {
+      if (!size) {
+        return;
+      }
+
       var physicalItems = new Array(size);
 
       for (var i = 0; i < size; i++) {
-        var row = document.createElement('tr', 'vaadin-grid-table-row');
+        var row = document.createElement('vaadin-grid-table-row');
         row.target = this.domHost;
         physicalItems[i] = row;
         row.setAttribute('hidden', ''); // hidden by default, removed when data is bound.
@@ -492,7 +508,15 @@
       return physicalItems;
     },
 
+    _debounceTemplate: function(callback) {
+      this.debounce('_debounceTemplate', callback);
+    },
+
     _sizeChanged: function(size) {
+      if (!size) {
+        return;
+      }
+
       this._virtualStart = 0;
       this._physicalTop = 0;
 

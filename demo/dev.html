@@ -161,16 +161,16 @@
         </vaadin-grid>
       </template>
       <script>
-        document.addEventListener('WebComponentsReady', function() {
-          Polymer({
-            is: 'x-app',
+        Polymer({
+          is: 'x-app',
 
-            properties: {
-              items: {
-                value: window.users.results
-              }
+          properties: {
+            items: {
+              value: window.users.results
             }
-          });
+          }
+        });
+        document.addEventListener('WebComponentsReady', function() {
         });
       </script>
     </dom-module>

@@ -72,7 +72,7 @@
         '_childColumnsChanged(_childColumns)'
       ],
 
-      created: function() {
+      ready: function() {
         this.classList.add('vaadin-grid-cell');
       },
 
@@ -127,14 +127,26 @@
       },
 
       _indexChanged: function(index, instance) {
+        if (!instance) {
+          return;
+        }
+
         instance.index = index;
       },
 
       _itemChanged: function(item, instance) {
+        if (!instance) {
+          return;
+        }
+
         instance.item = item;
       },
 
       _selectedChanged: function(selected, instance) {
+        if (!instance) {
+          return;
+        }
+
         instance.__selected__ = selected;
         instance.selected = selected;
       },
@@ -144,6 +156,10 @@
       },
 
       _toggleContent: function(isAttached, cellContent, insertionPoint) {
+        if (!cellContent || !insertionPoint) {
+          return;
+        }
+
         if (isAttached) {
           if (Polymer.dom(cellContent).parentNode !== this.target) {
             Polymer.dom(this.target).appendChild(cellContent);
@@ -159,6 +175,10 @@
       },
 
       _toggleInstance: function(isAttached, templatizer, instance) {
+        if (!templatizer || !instance) {
+          return;
+        }
+
         if (isAttached) {
           templatizer.addInstance(instance);
         } else {
@@ -175,6 +195,10 @@
       },
 
       _templateChanged: function(template) {
+        if (!template.templatizer) {
+          return;
+        }
+
         this.instance = template.templatizer.createInstance();
         this._templatizer = template.templatizer;
       },
@@ -200,8 +224,6 @@
     Polymer({
       is: 'vaadin-grid-table-cell',
 
-      extends: 'td',
-
       behaviors: [
         vaadinGridTableCellBehavior,
         vaadin.elements.grid.CellClickBehavior
@@ -218,8 +240,6 @@
 
     Polymer({
       is: 'vaadin-grid-table-header-cell',
-
-      extends: 'th',
 
       properties: {
         headerTemplate: Object,
@@ -306,12 +326,16 @@
 
       _getHeaderCellByColumn: function(column) {
         var thead = this.parentElement.parentElement;
-        return Polymer.dom(thead).querySelectorAll('tr:last-child th').filter(function(cell) {
+        return Polymer.dom(thead).querySelectorAll('vaadin-grid-table-header-row:last-child vaadin-grid-table-header-cell').filter(function(cell) {
           return cell.column === column;
         })[0];
       },
 
       _headerTemplateChanged: function(headerTemplate, isAttached) {
+        if (headerTemplate === undefined || (headerTemplate && !headerTemplate.templatizer)) {
+          return;
+        }
+
         if (headerTemplate !== null && (this._isColumnRow || this.column.localName === 'vaadin-grid-column-group')) {
           this._isEmpty = false;
           this.instance = this.instance || headerTemplate.templatizer.createInstance();
@@ -331,8 +355,6 @@
     Polymer({
       is: 'vaadin-grid-table-footer-cell',
 
-      extends: 'td',
-
       properties: {
         footerTemplate: Object
       },
@@ -345,6 +367,10 @@
       observers: ['_footerTemplateChanged(footerTemplate, isAttached)'],
 
       _footerTemplateChanged: function(footerTemplate, isAttached) {
+        if (footerTemplate === undefined || (footerTemplate && !footerTemplate.templatizer)) {
+          return;
+        }
+
         if (footerTemplate !== null && (this._isColumnRow || this.column.localName === 'vaadin-grid-column-group')) {
           this._isEmpty = false;
           this.instance = this.instance || footerTemplate.templatizer.createInstance();
