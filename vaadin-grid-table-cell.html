@@ -118,6 +118,10 @@
       },
 
       _expandedChanged: function(expanded, instance) {
+        if (!instance) {
+          return;
+        }
+
         instance.__expanded__ = expanded;
         instance.expanded = expanded;
       },
@@ -162,13 +166,15 @@
 
         if (isAttached) {
           if (Polymer.dom(cellContent).parentNode !== this.target) {
-            Polymer.dom(this.target).appendChild(cellContent);
+            // TODO:
+            //Polymer.dom(this.target).appendChild(cellContent);
+            Polymer.dom(this.target.$.scroller).appendChild(cellContent);
           }
           Polymer.dom(this).appendChild(insertionPoint);
         } else {
           this.debounce('remove-content', function() {
             if (!this.isAttached && Polymer.dom(cellContent).parentNode === this.target) {
-              Polymer.dom(this.target).removeChild(cellContent);
+              Polymer.dom(this.target.$.scroller).removeChild(cellContent);
             }
           }, 1);
         }
@@ -195,7 +201,8 @@
       },
 
       _templateChanged: function(template) {
-        if (!template.templatizer) {
+        console.log('templateChanged');
+        if (!template || !template.templatizer) {
           return;
         }
 
@@ -204,20 +211,24 @@
       },
 
       _instanceChanged: function(instance, target) {
+        if (!instance || !target) {
+          return;
+        }
+
         this.style.height = '';
 
         this._cellContent = document.createElement('div');
 
         this._cellContent.setAttribute('class', 'cell-content');
         var contentId = vaadin.elements.grid._contentIndex = vaadin.elements.grid._contentIndex + 1 || 0;
-        this._cellContent.setAttribute('data-cell-content-id', contentId);
+        this._cellContent.setAttribute('slot', 'data-cell-content-id-' + contentId);
         // TODO: maybe change data-cell-content-id attribute to ID with a prefix?
         this._cellContent.setAttribute('id', 'vaadin-grid-cell-content-' + contentId);
 
         Polymer.dom(this._cellContent).appendChild(this.instance.root);
 
-        this._insertionPoint = document.createElement('content');
-        this._insertionPoint.setAttribute('select', '[data-cell-content-id="' + contentId + '"]');
+        this._insertionPoint = document.createElement('slot');
+        this._insertionPoint.setAttribute('name', 'data-cell-content-id-' + contentId);
       },
     };
 

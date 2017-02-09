@@ -508,8 +508,8 @@
       return physicalItems;
     },
 
-    _debounceTemplate: function(callback) {
-      this.debounce('_debounceTemplate', callback);
+    _debounceTemplate: function(callback, delay) {
+      this.debounce('_debounceTemplate', callback, delay);
     },
 
     _sizeChanged: function(size) {

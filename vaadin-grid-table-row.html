@@ -119,10 +119,18 @@
       },
 
       _columnsChanged: function(columns, target) {
+        if (!columns || !target) {
+          return;
+        }
+
+        debugger;
+
         Polymer.dom(this).innerHTML = '';
 
-        var cells = [];
+        // TODO: remove
+        //this.style.height = '50px';
 
+        var cells = [];
         columns.forEach(function(column, columnIndex) {
           // Get a cached cell instance if one is available
           var cacheName = '_' + this.is.replace(/-/g, '_') + '_cells';

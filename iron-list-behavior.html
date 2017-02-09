@@ -261,7 +261,10 @@
       _physicalCountVal: 0,
 
       set _physicalCount(val) {
-        this._physicalCountVal = val;
+        if (val !== this._physicalCountVal) {
+          console.log(this._physicalCountVal, val);
+          this._physicalCountVal = val;
+        }
         this._physicalEnd = (this._physicalStart + this._physicalCount - 1) % this._physicalCount;
       },
 
@@ -430,7 +433,8 @@
         } else if (this._lastPage !== currentPage && isClientHeightFull) {
           // paint the page and defer the next increase
           // wait 16ms which is rough enough to get paint cycle.
-          Polymer.dom.addDebouncer(this.debounce('_debounceTemplate', this._increasePool.bind(this, this._itemsPerRow), 16));
+          //Polymer.dom.addDebouncer(this.debounce('_debounceTemplate', this._increasePool.bind(this, this._itemsPerRow), 16));
+          this._debounceTemplate(this._increasePool.bind(this, this._itemsPerRow), 16);
         } else {
           // fill the rest of the pages
           this._debounceTemplate(this._increasePool.bind(this, this._itemsPerRow));

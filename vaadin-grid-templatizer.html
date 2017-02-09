@@ -12,7 +12,7 @@
       this.dataHost = dataHost;
     },
 
-    behaviors: [Polymer.Templatizer],
+    //behaviors: [Polymer.Templatizer],
 
     properties: {
       template: Object,
@@ -24,12 +24,39 @@
     observers: ['_templateChanged(template)', '_forwardedParentPropsChanged(_forwardedParentProps.*, _templateInstances)'],
 
     created: function() {
-      this._instanceProps = {
-        expanded: true,
-        index: true,
-        item: true,
-        selected: true
+      this._templatizer = new Polymer.Templatizer();
+
+      this.templatize = function(template) {
+        this._ctor = this._templatizer.templatize(template, {
+            instanceProps: {
+              expanded: true,
+              index: true,
+              item: true,
+              selected: true
+            },
+
+            fwdInstancePropToHost: function() {
+
+            },
+
+            fwdHostPropToInstance: function(host, prop, value) {
+              console.log(host, prop, value);
+            }
+          }
+        );
+      }.bind(this);
+
+      this.stamp = function() {
+        // TODO: host should be <vaadin-grid> / this.dataHost instead.
+        return new this._ctor(this, {});
       };
+
+      // this._instanceProps = {
+      //   expanded: true,
+      //   index: true,
+      //   item: true,
+      //   selected: true
+      // };
     },
 
     createInstance: function() {

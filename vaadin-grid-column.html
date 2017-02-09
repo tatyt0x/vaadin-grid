@@ -473,7 +473,7 @@ The `class` attribute is used to differentiate header and footer templates.
 
     _addNodeObserver: function() {
       this._observer = Polymer.dom(this).observeNodes(function(info) {
-        this._rootColumns = Polymer.dom(this).children.filter(function(child) {
+        this._rootColumns = Array.prototype.filter.call(Polymer.dom(this).children, function(child) {
           return /column/.test(child.localName);
         });
         var columns = function(node) {
