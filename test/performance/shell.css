@@ -1,0 +1,61 @@
+body {
+  margin: 0 !important;
+}
+.shell {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+.shell .left {
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  background: antiquewhite;
+}
+.shell .right {
+  position: absolute;
+  width: calc(100% - 150px);
+  height: 100%;
+  background: white;
+  margin-left: 150px;
+}
+.shell .top {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 64px;
+  background: orange;
+  color: white;
+}
+.shell .top .text {
+  font-size: 16px;
+  margin-left: 16px;
+}
+.shell .right .top .text {
+  margin-left: 25px;
+}
+.shell .text {
+  overflow: hidden;
+}
+
+.shell .left .content .text {
+  font-size: 16px;
+  line-height: 52px;
+  margin-left: 16px;
+  opacity: 0.5;
+}
+
+.shell .right .content {
+  background: moccasin;
+  position: absolute;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+vaadin-grid {
+  height: 100% !important;
+}
