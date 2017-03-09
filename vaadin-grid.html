@@ -210,7 +210,7 @@ first element in the cell will be focused. You can override the behavior by appl
 <dom-module id="vaadin-grid">
   <style>
     :host {
-      display: block;
+      display: flex;
       height: 400px;
       background: var(--primary-background-color, #fff);
       box-sizing: border-box;
@@ -224,8 +224,7 @@ first element in the cell will be focused. You can override the behavior by appl
     }
 
     #scroller {
-      height: 100%;
-      width: 100%;
+      flex: 1;
     }
 
   </style>
